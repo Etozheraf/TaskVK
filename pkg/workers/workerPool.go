@@ -70,7 +70,10 @@ func work(ctx context.Context, jobs <-chan string, term <-chan struct{}, w func(
 			return
 		case <-term:
 			return
-		case str := <-jobs:
+		case str, ok := <-jobs:
+			if !ok {
+				return
+			}
 			w(str)
 		}
 	}
